@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>JS Drum Kit</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="#">
 </head>
 <body>
 
@@ -58,7 +59,26 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  // My code
+  function removeTransition (e) {
+    if (e.propertyName !== 'transform') return; // only focus on the the transition class that's the longest, which is transform
+    this.classList.remove("playing"); //this refers to the element that was called
+  }
+  
+  function playsound (e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //select the audio element with the data key matching the pressed key
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`); //select the div element with the matching pressed key
+    if (!audio) return; //if null then ignore
+    audio.currentTime = 0; //reset the sound each time the key is pressed
+    audio.play();
+    key.classList.add("playing"); //add the visual effects of key pressing
+  }
+  
+  const keys = document.querySelectorAll('.key') 
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition)) //listen for when the effects are done, then remove press effects.
 
+
+  window.addEventListener('keydown', playsound);
 </script>
 
 
